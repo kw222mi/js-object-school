@@ -1,201 +1,117 @@
-
-let lexicon = {
-name: 'lexicon',
-address: 'Smallstreet 4',
-zipcode: '13333',
-city: 'Stockholm',
-students: [],
-teachers: [],
-relegateStudent: function (student) {
+function School (name, address, zipcode, city) {
+    this.name = name,
+    this.address = address,
+    this.zipcode = zipcode,
+    this.city = city,
+    this.students = [],
+    this.teachers= [],
+    this.relegateStudent= function (student) {
     student.subjects.forEach((subject) => subject.removeStudent)
     student.subjects = []
-
-},
-fireTeacher: function (teacher) {
+    },
+    this.fireTeacher= function (teacher) {
     teacher.subjects.forEach((subject) => subject.removeTeacher)
     teacher.subjects = []
 }
 }
 
-let math = {
-    name: 'math',
-    students: [],
-    teacher: {},
-   addTeacher: function (teacher) {
+function Student(name, age, gender ) {
+  this.name = name,
+  this.age = age,
+  this.gender = gender,
+  this.subjects = [],
+  this.addSubject = function (subject) {
+        this.subjects.push(subject)
+    },
+  this.quitSubject = function (subject) {
+        const index = this.subjects.indexOf(subject)
+        const x = this.subjects.splice(index, 1)
+    }
+}
+
+function Teacher (name) {
+    this.name = name,
+    this.subjects = [],
+    this.addSubject= function (subject) {
+        this.subjects.push(subject)
+    }
+}
+
+function Subject (name) {
+    this.name= name,
+    this.students = [],
+    this.teacher= {},
+   this.addTeacher = function (teacher) {
         this.teacher = teacher
     },
-    removeTeacher: function (teacher) {
+    this.removeTeacher= function (teacher) {
         this.teacher = {}
     },
-    addStudent: function (student) {
+    this.addStudent= function (student) {
         this.students.push(student)
     },
-    removeStudent: function (student) {
+    this.removeStudent= function (student) {
         this.students.indexOf(student) 
         const x = this.students.splice(index, 1)
     }
 }
 
-let english = {
-    name: 'english',
-    students: [],
-    teacher: {},
-    addTeacher: function (teacher) {
-        this.teacher = teacher
-    },
-    removeTeacher: function (teacher) {
-        this.teacher = {}
-    },
-    addStudent: function (student) {
-        this.students.push(student)
-    },
-    removeStudent: function (student) {
-        this.students.indexOf(student) 
-        const x = this.students.splice(index, 1)
-    }
-}
 
-let history = {
-    name: 'history',
-    students: [],
-    teacher: {},
-    addTeacher: function (teacher) {
-        this.teacher = teacher
-    },
-    removeTeacher: function (teacher) {
-        this.teacher = {}
-    },
-    addStudent: function (student) {
-        this.students.push(student)
-    },
-    removeStudent: function (student) {
-        this.students.indexOf(student) 
-        const x = this.students.splice(index, 1)
-    }
-}
+// Create a school
+let lexicon = new School('lexicon', 'Smallstreet 4', '13333', 'Stockholm');
 
-let nisse = {
-    name: 'nisse',
-    age: '22',
-    gender: 'male',
-    subjects: [],
-    addSubject: function (subject) {
-        this.subjects.push(subject)
-    },
-    quitSubject: function (subject) {
-        const index = this.subjects.indexOf(subject)
-        const x = this.subjects.splice(index, 1)
-    }
-}
+// Create teachers
+let eva = new Teacher('eva')
+let kerstin = new Teacher('kerstin')
+lexicon.teachers.push(eva, kerstin)
 
-let lasse = {
-    name: 'lasse',
-    age: '22',
-    gender: 'male',
-    subjects: [],
-    addSubject: function (subject) {
-        this.subjects.push(subject)
-    },
-     quitSubject: function (subject) {
-        const index = this.subjects.indexOf(subject)
-        const x = this.subjects.splice(index, 1)
-    }
-}
+// Create students
+let nisse = new Student('nisse', '22', 'male')
+let lasse = new Student('lasse', '22', 'male')
+let bosse = new Student('bosse', '22', 'male')
+let frasse = new Student('frasse', '22', 'male')
+let olle = new Student('olle', '22', 'male')
+lexicon.students.push(nisse, lasse, bosse, frasse, olle)
 
-let bosse = {
-    name: 'bosse',
-    age: '22',
-    gender: 'male',
-    subjects: [],
-    addSubject: function (subject) {
-        this.subjects.push(subject)
-    },
-     quitSubject: function (subject) {
-        const index = this.subjects.indexOf(subject)
-        const x = this.subjects.splice(index, 1)
-    }
-}
+// Create subjects
+let math = new Subject ('math')
+let english = new Subject ('english')
+let history = new Subject('history')
 
-let frasse = {
-    name: 'frasse',
-    age: '22',
-    gender: 'male',
-    subjects: [],
-    addSubject: function (subject) {
-        this.subjects.push(subject)
-    },
-     quitSubject: function (subject) {
-        const index = this.subjects.indexOf(subject)
-        const x = this.subjects.splice(index, 1)
-    }
-}
-
-let olle = {
-    name: 'olle',
-    age: '22',
-    gender: 'male',
-    subjects: [],
-    addSubject: function (subject) {
-        this.subjects.push(subject)
-    },
-     quitSubject: function (subject) {
-        const index = this.subjects.indexOf(subject)
-        const x = this.subjects.splice(index, 1)
-    }
-}
-
-let kerstin = {
-    name: 'kerstin',
-    subjects: [],
-    enlistToSubject: function (subject) {
-        this.subjects.push(subject)
-    }
-}
-
-let eva = {
-    name: 'eva',
-    subjects: [],
-    enlistToSubject: function (subject) {
-        this.subjects.push(subject)
-    }
-}
-
-eva.subjects.push(math)
-console.log(eva)
-console.log(math)       
-/* Datan är väl användbar ur vissa perspektiv, det beror ju helt på hur den ska användas. Känns lite 
-knepigt att lägga till ämne till läraren och sedan lägga till läraren till ämnet. Risk att det blir 
-problem med cirkulära beroenden senare. Dessutom kanske ett ämne kan ha flera lärare. */
-
-math.students.push(nisse)
-console.log(math)
-
-function  addSubjectToTeacher(teacher, subject) {
-
-    teacher.subjects.push(subject)
-    subject.teacher=teacher
-    return teacher
-}
-
-console.log(addSubjectToTeacher(kerstin, history))
-
+// Add subjects to teachers
+eva.addSubject(math)
+eva.addSubject(history)
 history.addTeacher(eva)
-//console.log(history)
+math.addTeacher(eva)
+kerstin.addSubject(english)
+english.addTeacher(kerstin)
 
-kerstin.enlistToSubject(math)
-//console.log(kerstin)
+// Add subjects to students
+nisse.addSubject(math)
+math.addStudent(nisse)
+lasse.addSubject(math)
+math.addStudent(lasse)
+bosse.addSubject(history)
+history.addStudent(bosse)
 
-history.addStudent(nisse)
-//console.log(history)
 
-nisse.addSubject(history)
-//console.log(nisse)
 
-nisse.quitSubject(history)
+function displayAllStudents() {
+    for (const studentIndex in lexicon.students) {
+        const student = lexicon.students[studentIndex]
+        
+        console.log(`Student ${studentIndex}:`)
+        
+        for (const key in student) {
+            if (student.hasOwnProperty(key)) {
+                const value = student[key];
+                console.log(`  ${key}: ${value}`)
+            }
+        }
 
-eva.enlistToSubject(history)
-eva.enlistToSubject(math)
-console.log(eva)
-lexicon.fireTeacher(eva)
-console.log(eva)
-console.log(math)
+        console.log(); // En tom rad för att separera studenterna
+    }
+}
+
+displayAllStudents()
+
